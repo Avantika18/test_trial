@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+div.tooltip {   
+  position: absolute;           
+  text-align: center;           
+  width: 60px;                  
+  height: 28px;                 
+  padding: 2px;             
+  font: 12px sans-serif;        
+  background: lightsteelblue;   
+  border: 0px;      
+  border-radius: 8px;           
+  pointer-events: none;         
+}
+
+text {
+  font: 13px/1.7em 'Open Sans';
+}
+
+.body{
+overflow:hidden;
+margin-top : -10px;
+}
+.bubble{
+overflow:hidden;
+}
+
+</style>
+<body class="body">
+ 
+<script src="js/d3.v3.min.js"></script>
+<script>
+var cat="crime";
+if(sessionStorage.getItem("category"))
+	cat = sessionStorage.getItem("category");
+var file="sub-category.json;"
+if(cat=="crime") {file="sub-category.json";}
+else if(cat=="electriciy_and_power") {file="sub_electricity.json";}
+else if(cat=="garbage") {file="sub_garbage";}
+else if(cat=="illegal_parking") {file="sub_pollution.json";}
+else if(cat=="public_transport") {file="sub_public_transport.json";}
+else if(cat=="roads_and_footpath") {file="sub_road.json";}
+else if(cat=="sewage_and_drains") {file="sub_sewage.json";}
+else if(cat=="traffic") {file="sub_traffic.json";}
+else {file="sub_water.json";}
+
+
+var diameter = 500,
+    format = d3.format(",d"),
+    color = d3.scale.category20c();
+
+var height = 400,
+width=400;
+
+var bubble = d3.layout.pack()
+    .sort(null)
+    .size([height, width]);
+   
+
+var div = d3.select("body").append("div")   
+.attr("class", "tooltip")               
+.style("opacity", 0);
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("class", "bubble");
+
+d3.json(file, function(error, root) {
+	console.log(root);
+  var node = svg.selectAll(".node")
+      .data(bubble.nodes(classes(root))
+      .filter(function(d) { return !d.children; }))
+    .enter().append("g")
+      .attr("class", "node")
+      .attr("transform", function(d) { return "translate(" + d.x*1 + "," + d.y*1 + ")"; });
+
+  node.append("title")
+      .text(function(d) { return d.className + ": " + format(d.value)+"%"; });
+
+  node.append("circle")
+      .attr("r", function(d) { return d.r*1; })
+      .style("fill","#6baed6")
+      .style("opacity",0.7); 
+    		  //function(d) {
+    	  //return color(2);
+    	  //console.log(color(d.packageName));
+    	  //return });
+
+  node.append("text")
+      .attr("dy", ".3em")
+      .style("text-anchor", "middle")
+    // .attr("fill", "#08088A")
+      .style("font-size","13px")
+      .text(function(d) { return d.className.substring(0, d.r / 3); });
+  
+  
+
+  node.on("mousemove", function(d,i) {
+	  console.log(d)
+      div.transition()        
+      .duration(200)      
+      .style("opacity", .9);      
+  		div.html(d.className +": " + d.value+"%" )  
+      .style("left", (d3.event.pageX) + "px")     
+      .style("top", (d3.event.pageY - 28) + "px");                      
+  })
+  .on("mouseout",  function(d,i) {
+	  div.transition()        
+      .duration(500)      
+      .style("opacity", 0);  
+  }); 
+ 
+  
+});
+
+// Returns a flattened hierarchy containing all leaf nodes under the root.
+function classes(root) {
+  var classes = [];
+
+  function recurse(name, node) {
+    if (node.children) node.children.forEach(function(child) { recurse(node.name, child); });
+    else classes.push({packageName: name, className: node.name, value: node.size});
+  }
+
+  recurse(null, root);
+  return {children: classes};
+}
+
+d3.select(self.frameElement).style("height", diameter + "px");
+
+</script>

@@ -1,0 +1,29 @@
+{
+    "name": "flare",
+    "children": [
+        {
+            "name": "Pollution",
+            "size": 20
+        },
+        {
+            "name": "Supply",
+            "size": 20
+        },
+        {
+            "name": "Meters",
+            "size": 10
+        },
+        {
+            "name": "BBWSB",
+            "size": 20
+        },
+        {
+            "name": "Broken Pipes",
+            "size": 10
+        },
+        {
+            "name": "Shortage",
+            "size": 20
+        }
+    ]
+}

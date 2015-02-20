@@ -1,0 +1,25 @@
+{
+    "name": "flare",
+    "children": [
+        {
+            "name": "Traffic Jams",
+            "size": 40
+        },
+        {
+            "name": "Encroachment",
+            "size": 30
+        },
+        {
+            "name": "Blockage",
+            "size": 20
+        },
+        {
+            "name": "Bottleneck Junctions",
+            "size": 5
+        },
+        {
+            "name": "Traffic Police",
+            "size": 5
+        }
+    ]
+}

@@ -1,0 +1,25 @@
+{
+    "name": "flare",
+    "children": [
+        {
+            "name": "Bus",
+            "size": 30
+        },
+        {
+            "name": "Auto",
+            "size": 30
+        },
+        {
+            "name": "Metro",
+            "size": 10
+        },
+        {
+            "name": "Fare increase",
+            "size": 20
+        },
+        {
+            "name": "Less connectivity",
+            "size": 10
+        }
+    ]
+}

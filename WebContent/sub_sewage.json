@@ -1,0 +1,21 @@
+{
+    "name": "flare",
+    "children": [
+        {
+            "name": "broken/blocked drainage",
+            "size": 30
+        },
+        {
+            "name": "manhole/open drains",
+            "size": 30
+        },
+        {
+            "name": "overflowing sewages",
+            "size": 30
+        },
+        {
+            "name": "bwssb",
+            "size": 10
+        }
+    ]
+}

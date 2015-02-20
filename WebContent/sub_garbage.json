@@ -1,0 +1,22 @@
+{
+
+    "name": "flare",
+    "children": [
+        {
+            "name": "Collection",
+            "size": 30
+        },
+        {
+            "name": "Disposal",
+            "size": 30
+        },
+        {
+            "name": "Encroachment",
+            "size": 30
+        },
+        {
+            "name": "Health Hazard",
+            "size": 10
+        }
+           ]
+}

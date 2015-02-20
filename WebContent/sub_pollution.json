@@ -1,0 +1,21 @@
+{
+    "name": "flare",
+    "children": [
+        {
+            "name": "Noise",
+            "size": 40
+        },
+        {
+            "name": "Air",
+            "size": 40
+        },
+        {
+            "name": "Garbage",
+            "size": 10
+        },
+        {
+            "name": "Water Pipes",
+            "size": 10
+        }
+    ]
+}

@@ -1,0 +1,33 @@
+{
+    "name": "flare",
+    "children": [
+        {
+            "name": "potholes",
+            "size": 50
+        },
+        {
+            "name": "uneven roads",
+            "size": 10
+        },
+        {
+            "name": "streelights",
+            "size": 10
+        },
+        {
+            "name": "sewage pipes/ drains",
+            "size": 10
+        },
+        {
+            "name": "foothpaths",
+            "size": 5
+        },
+        {
+            "name": "Encroachment",
+            "size": 5
+        },
+        {
+            "name": "dividers",
+            "size": 5
+        }
+    ]
+}

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>chart created with amCharts | amCharts</title>
+		<meta name="description" content="chart created using amCharts live editor" />
+
+		<!-- amCharts javascript sources -->
+		<script type="text/javascript" src="amcharts.js"></script>
+		<script type="text/javascript" src="js/xy.js"></script>
+
+		<!-- amCharts javascript code -->
+		<script type="text/javascript">
+		
+		var chartData = generateChartData2();
+		function generateChartData2(){
+
+			var request;
+		    var chartData=[];
+		    if (window.XMLHttpRequest) {
+		        request = new XMLHttpRequest();
+				// load
+		        var cat = "crime";
+				if(sessionStorage.getItem("category"))
+					cat = sessionStorage.getItem("category");
+				var url = "http://23.253.71.50:8080/cityZenServer/rest/statistics/getNumberOfIssuesBasedOnSeverity/"+cat;
+			    //request.open('GET', "trends2.json", false);
+				//url = "scatter.json";
+			    request.open('GET',url, false);
+			    request.send();
+			    var d = JSON.parse(request.responseText);
+			    console.log(d.length);
+			    //console.log(d[1][1]);
+			    for (var i = 0; i < d.length; i=i+1) {
+			    	var s=d[i][0];
+			    	var st=1;
+			    	if(s<2) st=1;
+			    	else if(s < 5) st=2;
+			    	else if(s < 7) st=3;
+			    	else if(s < 9 ) st=4;
+			    	else st=5;
+			    	
+			        var severity = st;
+			        console.log(severity);
+			        var reports = d[i][1];
+			        var priority = severity;
+			        //var priority = (((Math.random()*10)/2));
+			        //if(priority  > 5) priority=5;
+			        
+			        chartData.push({
+			    		y2: severity,
+						x2: priority,
+						value2: reports
+				
+			        });
+			        
+			    }
+			    console.log(chartData);
+			    return chartData;
+			   //setData(request.responseText);
+		    }
+		}
+
+		
+			AmCharts.makeChart("chartdiv",
+				{
+					"type": "xy",
+					"pathToImages": "http://cdn.amcharts.com/lib/3/images/",
+					"maxZoomFactor": 12,
+					"startDuration":0,
+					"percentPrecision": 0,
+					"precision": 0,
+					"trendLines": [],
+					"graphs": [
+						{
+							//"balloonText": "x:<b>[[x]]</b> y:<b>[[y]]</b><br>Issues:<b>[[value]]</b>",
+							"balloonText": "Issues:<b>[[value]]</b>",
+							"bullet": "round",
+							"id": "AmGraph-2",
+							"lineAlpha": 0,
+							"lineColor": "#fcd202",
+							"valueField": "value2",
+							"xField": "y2",
+							"yField": "x2"
+						},
+						{
+							"id": "AmGraph-3",
+							"title": "graph 3"
+						}
+					],
+					"guides": [],
+					"valueAxes": [
+						{
+							"id": "ValueAxis-3",
+							"title": "Priority",
+							"titleColor": "#000000",
+							"fontSize" :14,
+							"autoGridCount" : false,
+							"gridCount" : 5,
+							// since we increased the number of grid lines dramatically, let's make the label display only on each 10th of them
+							"labelFrequency" : 1,
+							 "fontFamily" : "Open Sans"
+						
+							
+						},
+						{
+							"id": "ValueAxis-2",
+							"position": "bottom",
+							"title": "Severity",
+							"fontSize" :14,
+							"autoGridCount" : false,
+							"gridCount" : 5,
+							// since we increased the number of grid lines dramatically, let's make the label display only on each 10th of them
+							"labelFrequency" : 1,
+							 "fontFamily" : "Open Sans"
+						}
+					],
+					"allLabels": [],
+					"balloon": {},
+					"titles": [],
+					"dataProvider":  chartData
+				}
+			);
+		</script>
+	</head>
+	<body>
+		<div id="chartdiv" style="width: 100%; height: 230px; background-color: #FFFFFF;" ></div>
+	</body>
+</html>

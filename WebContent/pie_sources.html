@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>chart created with amCharts | amCharts</title>
+		<meta name="description" content="chart created using amCharts live editor" />
+
+		<!-- amCharts javascript sources -->
+		<script type="text/javascript" src="amcharts.js"></script>
+		<script type="text/javascript" src="pie_source.js"></script>
+
+		<!-- amCharts javascript code -->
+		<script type="text/javascript">
+		
+		var chartData = generateChartData2();
+		function generateChartData2(){
+
+			var request;
+		    var chartData=[];
+		    if (window.XMLHttpRequest) {
+		        request = new XMLHttpRequest();
+				// load
+				var url = "http://23.253.71.50:8080/cityZenServer/rest/statistics/getReportCountPerSource"
+			    //request.open('GET', "trends2.json", false);
+				url = "sources.json";
+			    request.open('GET',url, false);
+			    request.send();
+			    var d = JSON.parse(request.responseText);
+			    console.log(d.length);
+			    //console.log(d[1][1]);
+			    for (var i = 0; i < d.length; i=i+1) {
+			    	
+			    	var c = d[i][0];
+			    	var col=d[i][1].toPrecision(3);
+			    	if(col>1){
+			        chartData.push({
+			        	category :c,
+			        	column : col
+			    
+			        });
+			    	}
+			    }
+			    console.log(chartData);
+			    return chartData;
+			   //setData(request.responseText);
+		    }
+		}
+
+		
+			AmCharts.makeChart("chartdiv",
+				{
+					"type": "pie",
+					"pathToImages": "http://cdn.amcharts.com/lib/3/images/",
+					"balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]%</b></span>",
+					"innerRadius": 45,
+					"minRadius": 80,
+					"labelRadius": 2,
+					"labelText": " [[value]]%",
+					"startDuration": 0,
+					"marginBottom": 0,
+					"marginTop": 0,
+					"titleField": "category",
+					"valueField": "column",
+					"classNamePrefix": "",
+					"allLabels": [],
+					"balloon": {
+						"adjustBorderColor": false
+					},
+					"legend": {
+						"autoMargins": false,
+						"bottom": 0,
+						"labelWidth": 86,
+						"left": 5,
+						"marginLeft": 0,
+						"marginRight": 0,
+						"marginTop" :20,
+						"markerType": "circle",
+						"maxColumns": 4,
+						"position": "right",
+						"markerSize": 10,
+						//"reversedOrder": true,
+						"right": 0,
+						"marginBottom": 262,
+						"verticalGap": 2,
+						//"spacing": -100,
+						"switchable": false,
+						"textClickEnabled": true,
+						"valueAlign": "left",
+						"fontSize" :11,
+						 "fontFamily" : "Open Sans"
+					},
+					"titles": [],
+					"dataProvider":chartData
+				}
+			);
+		</script>
+	</head>
+	<body>
+		<div id="chartdiv" style="width: 450px; height: 300px; background-color: #FFFFFF; overflow:hidden;" ></div>
+	</body>
+</html>

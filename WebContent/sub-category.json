@@ -1,0 +1,46 @@
+{
+    "name": "flare",
+    "children": [
+        {
+            "name": "Corruption",
+            "size": 20
+        },
+        {
+            "name": "Robbery",
+            "size": 20
+        },
+        {
+            "name": "Gambling",
+            "size": 10
+        },
+        {
+            "name": "Smuggling",
+            "size": 2
+        },
+        {
+            "name": "Prostitution",
+            "size": 3
+        },
+        {
+            "name": "Threats",
+            "size": 8
+        },
+        {
+            "name": "Trafficking",
+            "size": 5
+        },
+        {
+            "name": "Fraud",
+            "size": 20
+        },
+        {
+            "name": "Encroachment",
+            "size": 5
+        },
+  
+        {
+            "name": "FIR Denial",
+            "size": 11
+        }
+    ]
+}

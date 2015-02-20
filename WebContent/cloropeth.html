@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- India State Map  -->
+    <title>India Map</title>
+
+    <!--  Scripts  -->
+<script src="js/d3.v3.min.js"></script>
+<script src="js/topojson.v1.min.js"></script>
+
+    <!--  Styles  -->  
+    <link type="text/css" rel="stylesheet" href="zcolorbrewer.css"/>
+    <style type="text/css">
+    svg {
+      background: #fff;
+      }
+      
+      #legend {
+    padding: 1.5em 0 0 1.5em;
+}
+
+
+li {
+    display: inline;
+}
+
+li.key {
+    border-top-width: 15px;
+    border-top-style: solid;
+    font-size: .75em;
+    width: 40px;
+    padding-left: 0;
+    padding-right: 0;
+   color:#fff;
+}
+
+    #map {
+     fill: none;
+  stroke: #fff;
+  stroke-linejoin: round;
+  height:200px;
+  width:300px;
+  overflow:hidden;
+      }
+      .body{
+      overflow:hidden;
+      
+      }
+      
+      div.tooltip {   
+  position: absolute;           
+  text-align: center;           
+  width: 150px;                  
+  height: 25px;                 
+  padding: 0px;             
+  font-size: 15px;     
+  background: #FFFFE0;
+  border: 1px;      
+  border-radius: 8px;           
+  pointer-events: none;         
+}     
+.q0-9 { fill:rgb(247,251,255); }
+.q1-9 { fill:rgb(222,235,247); }
+.q2-9 { fill:rgb(198,219,239); }
+.q3-9 { fill:rgb(158,202,225); }
+.q4-9 { fill:rgb(107,174,214); }
+.q5-9 { fill:rgb(66,146,198); }
+.q6-9 { fill:rgb(33,113,181); }
+.q7-9 { fill:rgb(8,81,156); }
+.q8-9 { fill:rgb(8,48,107); }
+    </style>
+  </head>
+  
+<body class="body">
+
+
+  <div id="map">
+ </div>
+<script type="text/javascript">
+
+
+
+var colors = d3.scale.linear()
+.range(["#F7FBFF","#DEEBF7","#C6DBEF","#9ECAE1","#6BAED6","#4292C6","#2171B5","#08519C","#08306B"]);
+
+    
+/*
+var zoom = d3.behavior.zoom()
+    .scaleExtent([1, 8])
+    .on("zoom", move);*/
+        
+var tooltip = d3.select("body").append("div").attr("class", "tooltip hidden");
+var quantize = d3.scale.quantize()
+.domain([0, .15])
+.range(d3.range(9).map(function(i) { 
+	return "q" + i + "-9"; }));
+    
+var div = d3.select("body").append("div")   
+.attr("class", "tooltip")               
+.style("opacity", 0);
+
+var width = 300,  
+height = 200,
+// SVG element as a JavaScript object that we can manipulate later
+svg = d3.select("#map").append("svg")
+  .attr("width", width)
+  .attr("height", height);
+  
+//Normally you'd look this up. This point is in the middle of Syria
+var center = [77.996815, 12.002075];
+// var center = [77.996951, 12.98805]; 
+
+
+function calculate_tranform()
+	{
+	var orientation = "e";
+	var trial = sessionStorage.getItem("orientation");
+	if(trial)
+		{orientation=trial;}
+	if(orientation=="e"){
+	var a=[width*3.3,height*3.3];}
+	else if(orientation=="w"){
+		var a=[width*3.6,height*3.3];}
+	else if(orientation=="n"){
+		var a=[width*3.6,height*2.3];}
+	else{
+		var a=[width*3.3,height*2.3];}
+	return a;
+	}
+	
+var t = calculate_tranform();
+// Instantiate the projection object
+var projection = d3.geo.conicConformal()  
+    .center(center)
+    .clipAngle(180)
+    // Size of the map itself, you may want to play around with this in 
+    // relation to your canvas size
+    .scale(60000)
+    // Center the map in the middle of the canvas
+   // .translate([width*2 , height*1.1 ])
+   .translate(t)
+   // .translate([width*3.3 , height*2.5 ])
+    //.translate(function(){return ([width*3.3,height*2.5])})
+    .precision(.1);
+    
+    
+var path = d3.geo.path().projection(projection); 
+var pincode={};
+
+//d3.csv("heatmap.csv",function(data){
+	
+	var data1=[];
+	  var request;
+	    var chartData=[];
+	    if (window.XMLHttpRequest) {
+	        request = new XMLHttpRequest();
+			// load
+			  var cat = "crime";
+		if(sessionStorage.getItem("category"))
+			cat = sessionStorage.getItem("category");
+		var url = "http://23.253.71.50:8080/cityZenServer/rest/statistics/getReportCountPerLocation/"+cat;
+		
+		    request.open('GET', url, false);
+		    request.send();
+	 data1 = JSON.parse(request.responseText);}
+	//console.log(data);
+	var data= data1.map(function(d,i)
+			{
+		var value=d[1].toString();
+		 var dr = {pin : d[0], val :value };
+		return dr;
+			})
+			
+	for(var i=0;i<data.length;i++)
+		{
+		pincode[data[i].pin] = data[i].val;
+		}
+	
+d3.json("bangalore_pincode.json", function(err, data) {  
+	
+	var city=    svg.append("g").selectAll("path")
+    .data(data.features)
+ .enter().append("path")
+    .attr("d",path)
+	    .attr("class", function(d) {
+	    	//var c = Math.floor(Math.random() * ( 9- 1 + 1)) + 1;
+	    	var num=parseInt(pincode[d.properties.pincode.toString()]);
+	    	if(!num)
+				{num = 27;}
+	    	//console.log(num);
+	   		if(num<30) {a=2}
+	   	
+	   		else if(num < 70) {a=4}
+	   		else if(num < 90) {a=7}
+	   		else 
+	   		{a=8}
+			
+	    	var c= "q"+a+"-9";
+	    	//console.log(a);
+	    	return c;});
+	
+	 //tooltips
+	    var legend = d3.select('#legend')
+  .append('ul')
+    .attr('class', 'inline-list');
+  
+	  city
+	  //Adding mouseevents
+	  .on("mouseover", function(d) {
+		  var num=parseInt(pincode[d.properties.pincode.toString()]);
+	    	if(!num)
+				{num = 27;}
+	    	
+	    d3.select(this).transition().duration(300).style("opacity", 1);
+	    div.transition().duration(300)
+	    .style("opacity", 1)
+	    div.text(d.properties.name + " : " + num)
+	     .style("left","px")
+	    .style("top",function(d){
+	    if(d3.event.pageY<150){
+	    	return (d3.event.pageY+20)+"px";	
+	    }
+	    return (d3.event.pageY-30)+"px";
+	    });
+	    //.style("left", (d3.event.pageX) - "px")
+	   // .style("left",(d3.event.pageX)+"px")
+	   // .style("top", (d3.event.pageY -30) + "px");
+	  })
+	  .on("mouseout", function() {
+	    d3.select(this)
+	    .transition().duration(300)
+	    .style("opacity", 0.8);
+	    div.transition().duration(300)
+	    .style("opacity", 0);
+	  })
+	   
+	//}
+
+    
+	
+	});	
+	//})
+  </script>
+</body>
+</html>
+
+</body>
+</html>

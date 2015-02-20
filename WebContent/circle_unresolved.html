@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Insert title here</title>
+<script src="js/d3.v3.min.js"></script>
+<style>
+.arc path {
+  stroke: #58D3F7;
+}
+</style>
+</head>
+<body>
+<script>
+
+/*
+var width = 200,
+    height = 200,
+    radius = 80;
+
+var color = d3.scale.ordinal()
+    .range(["#81F7F3", "#81F7F3"])
+
+var arc = d3.svg.arc()
+    .outerRadius(radius - 10)
+    .innerRadius(50);
+
+var data=[66,33];
+
+var pie = d3.layout.pie()
+    .sort(null)
+    .value(function(d,i) { return data[i]; });
+
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+  .append("g")
+    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+  var g = svg.selectAll(".arc")
+      .data(pie(data))
+    .enter().append("g")
+      .attr("class", "arc");
+
+  g.append("path")
+      .attr("d", arc)
+      .style("fill", function(d,i) { return color(i); });
+
+  g.append("text")
+      .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
+      .attr("dy", ".35em")
+      .style("text-anchor", "middle")
+      .text(function(d) { return d.data.age; });
+
+});
+*/
+
+
+
+var circleRadii = [60,40]
+
+var svgContainer = d3.select("body").append("svg")
+                                    .attr("width", 300)
+                                    .attr("height", 170);
+
+var circles = svgContainer.selectAll("circle")
+                          .data(circleRadii)
+                          .enter()
+                          .append("circle")
+
+var circleAttributes = circles
+                       .attr("cx", 80)
+                       .attr("cy", 80)
+                       .attr("r", function (d) { return d; })
+                       .style("fill", function(d) {
+                         var returnColor;
+                         if (d === 40) { returnColor = "#01DF74";
+                         } else { returnColor = "#D0F5A9";
+                         }
+                         return returnColor;
+                       });
+                       
+
+var line = svgContainer.append("line")
+                        .attr("x1", 80)
+                        .attr("y1", 80)
+                         .attr("x2", 80)
+                         .attr("y2", -60)
+                         .attr("stroke-width", 2)
+                         .attr("stroke", "#01DF74");
+                         
+
+var line = svgContainer.append("line")
+                        .attr("x1", 80)
+                        .attr("y1", 80)
+                         .attr("x2", -40)
+                         .attr("y2", 60)
+                         .attr("stroke-width", 2)
+                         .attr("stroke", "#01DF74");
+                         
+var line = svgContainer.append("line")
+.attr("x1", 250)
+.attr("y1", 80)
+ .attr("x2", 160)
+ .attr("y2", 80)
+ .attr("stroke-width", 1)
+ .attr("stroke", "#000");
+ 
+var cicle = svgContainer.append("circle")
+ .attr("cx", 160)
+ .attr("cy", 80)
+ .attr("r", 5)
+ .style("fill", "#000");
+ 
+ var text = svgContainer.append("text")
+ 	 .attr("x", 160)
+     .attr("y", 70)
+                .text("RESOLVED")
+                .attr("font-family", "sans-serif")
+                .attr("font-size", "15px")
+                .attr("fill", "#000");
+
+ 
+ var text = svgContainer.append("text")
+	 .attr("x", 180)
+ 	.attr("y", 50)
+            .text("34%")
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "30px")
+            .attr("fill", "#01DF74");
+</script>
+</body>
+</html>

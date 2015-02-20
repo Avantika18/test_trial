@@ -1,0 +1,22 @@
+{
+    "name": "flare",
+    "children": [
+        {
+            "name": "blocked foothpaths",
+            "size": 30
+        },
+        {
+            "name": "road congestion",
+            "size": 30
+        },
+        {
+            "name": "parking space",
+            "size": 30
+        },
+ 	{
+            "name": "other",
+            "size": 10
+        }
+
+    ]
+}

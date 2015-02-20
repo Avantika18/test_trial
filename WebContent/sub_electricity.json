@@ -1,0 +1,25 @@
+{
+    "name": "flare",
+    "children": [
+        {
+            "name": "Power Cut",
+            "size": 30
+        },
+        {
+            "name": "Street Lights",
+            "size": 20
+        },
+        {
+            "name": "BESCOM",
+            "size": 20
+        },
+        {
+            "name": "Open Wires",
+            "size": 10
+        },
+        {
+            "name": "sparks/explosions",
+            "size": 10
+        }
+    ]
+}
